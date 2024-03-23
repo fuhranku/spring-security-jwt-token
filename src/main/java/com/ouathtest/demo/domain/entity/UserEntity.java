@@ -1,8 +1,21 @@
 package com.ouathtest.demo.domain.entity;
 
-import com.ouathtest.demo.domain.constant.Role;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +30,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "user")
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +51,18 @@ public class User implements UserDetails {
 
     private Instant updatedDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleEntity> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return roles
+                .stream()
+                .map(roleEntity -> new SimpleGrantedAuthority(roleEntity.getName()))
+                .toList();
     }
 
     @Override

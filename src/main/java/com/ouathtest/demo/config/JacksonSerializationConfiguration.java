@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import java.text.SimpleDateFormat;
+
 @Configuration
 public class JacksonSerializationConfiguration {
     @Bean
@@ -18,7 +20,7 @@ public class JacksonSerializationConfiguration {
                 .featuresToEnable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                 .featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .featuresToEnable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
-                .featuresToEnable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .dateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"))
                 .featuresToEnable(SerializationFeature.INDENT_OUTPUT)
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .serializationInclusion(JsonInclude.Include.NON_NULL);

@@ -8,3 +8,9 @@ server:
   error:
     include-binding-errors: always
     include-message: always
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

@@ -1,6 +1,6 @@
 package com.ouathtest.demo.domain.constant;
 
-public enum Role {
+public enum RoleType {
     USER,
     ADMIN
 }
