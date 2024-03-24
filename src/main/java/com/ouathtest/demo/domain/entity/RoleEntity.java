@@ -37,6 +37,7 @@ public class RoleEntity {
 
     private String description;
 
+
     private Instant createdDate;
 
     private Instant updatedDate;
